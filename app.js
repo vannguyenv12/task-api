@@ -1,8 +1,11 @@
 const express = require('express');
 const app = express();
 const dotenv = require('dotenv');
+const cors = reuqire('cors');
+
 dotenv.config({ path: `${__dirname}/.env` });
 app.use(express.json());
+app.use(cors());
 // ROUTER
 const userRouter = require('./routes/user');
 const taskRouter = require('./routes/task');
