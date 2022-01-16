@@ -4,6 +4,11 @@ const dotenv = require('dotenv');
 const cors = reuqire('cors');
 
 dotenv.config({ path: `${__dirname}/.env` });
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+});
+
 app.use(express.json());
 app.use(
   cors({
