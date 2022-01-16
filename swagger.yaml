@@ -1,0 +1,323 @@
+openapi: 3.0.0
+info:
+  title: Task App
+  contact: {}
+  version: '1.0'
+servers:
+  - url: https://vannguyen-taskapp.herokuapp.com/api/v1
+    variables: {}
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Create User
+      operationId: CreateUser
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+            example:
+              username: example
+              email: example@gmail.com
+              password: pass123456
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login User
+      operationId: LoginUser
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginUserRequest'
+            example:
+              email: example@gmail.com
+              password: pass123456
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /users/me:
+    get:
+      tags:
+        - User
+      summary: Get My Profile
+      operationId: GetMyProfile
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    patch:
+      tags:
+        - User
+      summary: Update User
+      operationId: UpdateUser
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+            example:
+              username: canChangedName
+              emai: canChangedEmail@gmail.com,
+              password: canChangedPassword
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    delete:
+      tags:
+        - User
+      summary: Delete User
+      operationId: DeleteUser
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /users/me/avatar:
+    post:
+      tags:
+        - User
+      summary: Upload Avatar
+      operationId: UploadAvatar
+      parameters: []
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            encoding: {}
+            schema:
+              required:
+                - avatar
+              type: object
+              properties:
+                avatar:
+                  type: string
+        required: false
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    delete:
+      tags:
+        - User
+      summary: Delete Avatar
+      operationId: DeleteAvatar
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /users/logout:
+    post:
+      tags:
+        - User
+      summary: Logout User
+      operationId: LogoutUser
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /users/logoutAll:
+    post:
+      tags:
+        - User
+      summary: Logout all
+      operationId: Logoutall
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /tasks:
+    post:
+      tags:
+        - Task
+      summary: Create Task
+      operationId: CreateTask
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTaskRequest'
+            example:
+              name: clean my house
+              completed: false
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    get:
+      tags:
+        - Task
+      summary: Get All Tasks
+      operationId: GetAllTasks
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+  /tasks/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The task ID
+    get:
+      tags:
+        - Task
+      summary: Get Task
+      operationId: GetTask
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+    patch:
+      tags:
+        - Task
+      summary: Update Task
+      operationId: UpdateTask
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTaskRequest'
+            example:
+              completed: true
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+
+    delete:
+      tags:
+        - Task
+      summary: Delete Task
+      operationId: DeleteTask
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+components:
+  schemas:
+    CreateUserRequest:
+      title: CreateUserRequest
+      required:
+        - username
+        - email
+        - password
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        username: example
+        email: example@gmail.com
+        password: pass123456
+    LoginUserRequest:
+      title: LoginUserRequest
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: testprod@gmail.com
+        password: pass123456
+    UpdateUserRequest:
+      title: UpdateUserRequest
+      required:
+        - username
+      type: object
+      properties:
+        username:
+          type: string
+      example:
+        username: newName
+        email: newEmail@gmail.com
+    CreateTaskRequest:
+      title: CreateTaskRequest
+      required:
+        - name
+        - completed
+      type: object
+      properties:
+        name:
+          type: string
+        completed:
+          type: boolean
+      example:
+        name: clean house 2
+        completed: false
+    UpdateTaskRequest:
+      title: UpdateTaskRequest
+      required:
+        - completed
+      type: object
+      properties:
+        completed:
+          type: boolean
+      example:
+        completed: false
+  securitySchemes:
+    httpBearer:
+      type: http
+      scheme: bearer
+security:
+  - httpBearer: []
+tags:
+  - name: Auth
+  - name: User
+  - name: Task

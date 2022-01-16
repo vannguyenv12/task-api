@@ -82,7 +82,7 @@ const deleteTask = async (req, res) => {
       owner: req.user._id,
     });
     if (!task) return res.status(404).json();
-    res.status(204).json();
+    res.status(200).json();
   } catch (error) {
     res.status(500).json(error);
   }

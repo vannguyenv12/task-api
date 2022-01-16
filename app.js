@@ -1,13 +1,24 @@
 const express = require('express');
-const app = express();
+const path = require('path');
 const dotenv = require('dotenv');
 const cors = require('cors');
 
+const app = express();
+
 dotenv.config({ path: `${__dirname}/.env` });
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json());
 app.use(cors());
 
+// Swagger
+const swaggerUI = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./swagger.yaml');
+
+// API DOCUMENTS
+
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 // ROUTER
 const userRouter = require('./routes/user');
 const taskRouter = require('./routes/task');

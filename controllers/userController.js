@@ -20,7 +20,7 @@ const deleteMe = async (req, res) => {
   try {
     sendCancelEmail(req.user.email, req.user.name);
     await req.user.remove();
-    res.status(204).json();
+    res.status(200).json();
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
