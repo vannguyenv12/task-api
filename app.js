@@ -5,7 +5,11 @@ const cors = reuqire('cors');
 
 dotenv.config({ path: `${__dirname}/.env` });
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: '*',
+  })
+);
 // ROUTER
 const userRouter = require('./routes/user');
 const taskRouter = require('./routes/task');
