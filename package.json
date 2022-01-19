@@ -11,7 +11,7 @@
   "jest": {
     "testEnvironment": "node"
   },
-  "author": "",
+  "author": "Van Nguyen",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
