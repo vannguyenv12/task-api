@@ -165,7 +165,7 @@ paths:
       parameters: []
       requestBody:
         content:
-          application/x-www-form-urlencoded:
+          multipart/form-data:
             encoding: {}
             schema:
               required:
@@ -173,7 +173,7 @@ paths:
               type: object
               properties:
                 avatar:
-                  type: string
+                  type: file
         required: false
       responses:
         '200':
