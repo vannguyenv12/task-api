@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Task App
+  title: Task API
   contact: {}
   version: '1.0'
 servers:
@@ -21,9 +21,9 @@ paths:
             schema:
               $ref: '#/components/schemas/CreateUserRequest'
             example:
-              username: example
-              email: example@gmail.com
-              password: pass123456
+              username: myname1
+              email: myemail1@gmail.com
+              password: mypass
         required: true
       responses:
         '200':
@@ -45,8 +45,61 @@ paths:
             schema:
               $ref: '#/components/schemas/LoginUserRequest'
             example:
-              email: example@gmail.com
-              password: pass123456
+              email: myemail@gmail.com
+              password: mypass
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/forgotPassword:
+    post:
+      tags:
+        - Auth
+      summary: Forgot Password
+      description: Fill email. We will send link to you :)
+      operationId: ForgotPassword
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordRequest'
+            example:
+              email: myemail@gmail.com
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+  /auth/resetPassword/{token}:
+    parameters:
+      - in: path
+        name: token
+        schema:
+          type: string
+        required: true
+        description: The token
+    patch:
+      tags:
+        - Auth
+      summary: Reset Password
+      description: Set new password
+      operationId: ResetPassword
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordRequest'
+            example:
+              password: newpassword
         required: true
       responses:
         '200':
@@ -66,6 +119,8 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security:
+        - bearer: []
     patch:
       tags:
         - User
@@ -79,15 +134,15 @@ paths:
             schema:
               $ref: '#/components/schemas/UpdateUserRequest'
             example:
-              username: canChangedName
-              emai: canChangedEmail@gmail.com,
-              password: canChangedPassword
+              username: updateHere
         required: true
       responses:
         '200':
           description: ''
           headers: {}
       deprecated: false
+      security:
+        - bearer: []
     delete:
       tags:
         - User
@@ -99,6 +154,8 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security:
+        - bearer: []
   /users/me/avatar:
     post:
       tags:
@@ -123,6 +180,8 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security:
+        - bearer: []
     delete:
       tags:
         - User
@@ -134,6 +193,8 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security:
+        - bearer: []
   /users/logout:
     post:
       tags:
@@ -146,6 +207,8 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security:
+        - bearer: []
   /users/logoutAll:
     post:
       tags:
@@ -158,6 +221,8 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security:
+        - bearer: []
   /tasks:
     post:
       tags:
@@ -172,7 +237,7 @@ paths:
             schema:
               $ref: '#/components/schemas/CreateTaskRequest'
             example:
-              name: clean my house
+              name: clean house 1
               completed: false
         required: true
       responses:
@@ -180,6 +245,8 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security:
+        - bearer: []
     get:
       tags:
         - Task
@@ -191,6 +258,8 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security:
+        - bearer: []
   /tasks/{id}:
     parameters:
       - in: path
@@ -210,6 +279,8 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security:
+        - bearer: []
     patch:
       tags:
         - Task
@@ -223,13 +294,15 @@ paths:
             schema:
               $ref: '#/components/schemas/UpdateTaskRequest'
             example:
-              completed: true
+              completed: false
         required: true
       responses:
         '200':
           description: ''
           headers: {}
       deprecated: false
+      security:
+        - bearer: []
 
     delete:
       tags:
@@ -242,6 +315,29 @@ paths:
           description: ''
           headers: {}
       deprecated: false
+      security:
+        - bearer: []
+  /users/{id}:
+    parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+        description: The user ID
+    delete:
+      tags:
+        - Admin
+      summary: Delete Any User By ID
+      operationId: DeleteAnyUserByID
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
 components:
   schemas:
     CreateUserRequest:
@@ -259,9 +355,9 @@ components:
         password:
           type: string
       example:
-        username: example
-        email: example@gmail.com
-        password: pass123456
+        username: myname1
+        email: myemail1@gmail.com
+        password: mypass
     LoginUserRequest:
       title: LoginUserRequest
       required:
@@ -274,8 +370,28 @@ components:
         password:
           type: string
       example:
-        email: testprod@gmail.com
-        password: pass123456
+        email: myemail@gmail.com
+        password: mypass
+    ForgotPasswordRequest:
+      title: ForgotPasswordRequest
+      required:
+        - email
+      type: object
+      properties:
+        email:
+          type: string
+      example:
+        email: myemail@gmail.com
+    ResetPasswordRequest:
+      title: ResetPasswordRequest
+      required:
+        - password
+      type: object
+      properties:
+        password:
+          type: string
+      example:
+        password: newpassword
     UpdateUserRequest:
       title: UpdateUserRequest
       required:
@@ -285,8 +401,7 @@ components:
         username:
           type: string
       example:
-        username: newName
-        email: newEmail@gmail.com
+        username: updateHere
     CreateTaskRequest:
       title: CreateTaskRequest
       required:
@@ -299,7 +414,7 @@ components:
         completed:
           type: boolean
       example:
-        name: clean house 2
+        name: clean house 1
         completed: false
     UpdateTaskRequest:
       title: UpdateTaskRequest
@@ -312,12 +427,12 @@ components:
       example:
         completed: false
   securitySchemes:
-    httpBearer:
+    bearer:
       type: http
       scheme: bearer
-security:
-  - httpBearer: []
+security: []
 tags:
   - name: Auth
   - name: User
   - name: Task
+  - name: Admin
