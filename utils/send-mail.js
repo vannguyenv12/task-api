@@ -27,7 +27,18 @@ const sendCancelEmail = (email, name) => {
   mg.messages().send(data, (error, body) => {});
 };
 
+const sendEmail = (email, message) => {
+  const data = {
+    from: 'npnv.vn1@gmail.com',
+    to: email,
+    subject: 'Forgot Password',
+    text: message,
+  };
+  mg.messages().send(data, (error, body) => {});
+};
+
 module.exports = {
   sendWelcomeEmail,
   sendCancelEmail,
+  sendEmail,
 };

@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -35,6 +36,8 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
+  passwordResetToken: String,
+  passwordResetExpires: Date,
   avatar: {
     type: Buffer,
   },
@@ -85,6 +88,20 @@ userSchema.pre('save', async function (next) {
 
   next();
 });
+
+// Create Token For Reset Password
+userSchema.methods.createPasswordResetToken = function () {
+  const resetToken = crypto.randomBytes(32).toString('hex');
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+  console.log({ resetToken }, this.passwordResetToken);
+
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+  return resetToken; // plan token
+};
 
 // Remove All Task Of User
 userSchema.pre('remove', async function (next) {
