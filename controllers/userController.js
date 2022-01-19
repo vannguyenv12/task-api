@@ -1,4 +1,5 @@
 const { sendCancelEmail } = require('./../utils/send-mail');
+const User = require('./../models/User');
 
 const getMe = async (req, res) => {
   res.status(200).json(req.user);
@@ -7,8 +8,11 @@ const getMe = async (req, res) => {
 const updateMe = async (req, res) => {
   try {
     const keysUpdate = Object.keys(req.body);
-
     keysUpdate.forEach((field) => (req.user[field] = req.body[field]));
+    if (keysUpdate.includes('role')) {
+      return res.status(400).json({ error: 'You do not modify role' });
+    }
+
     await req.user.save();
     res.status(200).json(req.user);
   } catch (error) {
@@ -48,7 +52,18 @@ const logoutAll = async (req, res) => {
   }
 };
 
-// UPLOAD AVATAR
+// Only for admin
+const deleteUser = async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.status(200).json();
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
 module.exports = {
   getMe,
@@ -56,4 +71,5 @@ module.exports = {
   deleteMe,
   logoutMe,
   logoutAll,
+  deleteUser,
 };

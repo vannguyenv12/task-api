@@ -2,13 +2,14 @@ const express = require('express');
 const multer = require('multer');
 const sharp = require('sharp');
 const User = require('./../models/User');
-const auth = require('./../utils/auth');
+const { auth, restricTo } = require('./../utils/auth');
 const {
   getMe,
   updateMe,
   deleteMe,
   logoutMe,
   logoutAll,
+  deleteUser,
 } = require('./../controllers/userController');
 
 const router = express.Router();
@@ -20,6 +21,8 @@ router.patch('/me', updateMe);
 router.delete('/me', deleteMe);
 router.post('/logout', logoutMe);
 router.post('/logoutAll', logoutAll);
+
+router.delete('/:id', restricTo('admin'), deleteUser);
 
 // UPLOAD AVATAR
 const upload = multer({

@@ -3,7 +3,11 @@ const User = require('./../models/User');
 const { sendWelcomeEmail, sendEmail } = require('./../utils/send-mail');
 
 const registerUser = async (req, res) => {
-  const user = new User(req.body);
+  const user = new User({
+    username: req.body.username,
+    email: req.body.email,
+    password: req.body.password,
+  });
   try {
     await user.save();
     sendWelcomeEmail(user.email, user.username);

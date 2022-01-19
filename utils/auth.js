@@ -24,4 +24,18 @@ const auth = async (req, res, next) => {
   }
 };
 
-module.exports = auth;
+const restricTo = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res
+        .status(403)
+        .json({
+          error:
+            'You do not permission to use this route! Please use route /delete/me',
+        });
+    }
+    next();
+  };
+};
+
+module.exports = { auth, restricTo };
